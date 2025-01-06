@@ -1,19 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-hot-toast";
 
+//slice name: paste, value name: pastes
+
 const initialState = {
   pastes: localStorage.getItem("pastes")
-            ? JSON.parse(localStorage.getItem("pastes"))
-            : [],
+    ? JSON.parse(localStorage.getItem("pastes"))
+    : [],
 };
 
 const pasteSlice = createSlice({
-  name: "paste",
+  name: "paste", //slice name
   initialState,
   reducers: {
     addToPastes: (state, action) => {
       const paste = action.payload;
-      const index = state.pastes.findIndex((item) => item._id === paste._id);
+      const index = state.pastes.findIndex((item) => item._id === paste._id); //It searches for the paste in the array of pastes whose id matches the paste id
 
       if (index >= 0) {
         // If the course is already in the Pastes, do not modify the quantity
@@ -51,7 +53,7 @@ const pasteSlice = createSlice({
       if (index >= 0) {
         // If the course is found in the Pastes, remove it
         state.pastes.splice(index, 1);
-        // Update to localstorage
+        // Update to localstorage after removing that one paste
         localStorage.setItem("pastes", JSON.stringify(state.pastes));
         // show toast
         toast.success("Paste deleted");
@@ -65,7 +67,6 @@ const pasteSlice = createSlice({
   },
 });
 
-export const { addToPastes, removeFromPastes, updatePastes } =
-  pasteSlice.actions;
+export const { addToPastes, removeFromPastes, updatePastes } = pasteSlice.actions;
 
 export default pasteSlice.reducer;
