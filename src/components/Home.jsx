@@ -13,8 +13,12 @@ import { useSearchParams } from "react-router-dom";
 const Home = () => {
   const [value, setValue] = useState(""); // Stores paste content
   const [title, setTitle] = useState(""); // Stores paste title
-  const [searchParams, setSearchParams] = useSearchParams(); // For managing query parameters in the URL
+
+  //For managing query parameters in the URL to find if it contains any paste id, if it does then show update paste 
+  //btn instead of create paste, to get id we used useSearchParams hook from react-router-dom
+  const [searchParams, setSearchParams] = useSearchParams();
   const pasteId = searchParams.get("pasteId"); // Fetch the "pasteId" from query params
+
   const pastes = useSelector((state) => state.paste.pastes); // Fetch all pastes from Redux store
   const dispatch = useDispatch(); // Dispatch actions to Redux store
 
@@ -62,7 +66,7 @@ const Home = () => {
   };
 
   /**
-   * Prefills the form if editing an existing paste
+   * Prefills(using 'value' attribute) the form if editing an existing paste
    * - Runs whenever "pasteId" or "pastes" change.
    */
   useEffect(() => {
@@ -80,7 +84,9 @@ const Home = () => {
   return (
     <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0">
       <div className="flex flex-col gap-y-5 items-start">
-        <div className="w-full flex flex-row gap-x-4 justify-between items-center">
+        <div //div for title, create/update btn and reset btn(when editing)
+          className="w-full flex flex-row gap-x-4 justify-between items-center"
+        > 
           {/* Title Input */}
           <input
             type="text"
@@ -103,6 +109,7 @@ const Home = () => {
           {/* Reset Button (Only visible when editing) */}
           {pasteId && (
             <button
+              title ="Reset"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700"
               onClick={resetPaste}
             >
@@ -112,10 +119,10 @@ const Home = () => {
         </div>
 
         {/* Paste Content Section */}
-        <div
+        <div //Div for dots, copy btn and then the content
           className={`w-full flex flex-col items-start relative rounded bg-opacity-10 border border-[rgba(128,121,121,0.3)] backdrop-blur-2xl`}
         >
-          <div
+          <div //This div is for three dots on left and copy button on right
             className={`w-full rounded-t flex items-center justify-between gap-x-4 px-4 py-2 border-b border-[rgba(128,121,121,0.3)]`}
           >
             <div className="w-full flex gap-x-[6px] items-center select-none group">
